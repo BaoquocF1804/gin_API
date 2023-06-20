@@ -1,6 +1,6 @@
 -- name: CreateEntry :exec
 INSERT INTO entries (
-    accounts_id,
+    account_id,
     amount
 ) VALUES (
     ?, ?
@@ -12,7 +12,7 @@ WHERE id = ? LIMIT 1;
 
 -- name: ListEntries :many
 SELECT * FROM entries
-WHERE accounts_id = ?
+WHERE account_id = ?
 ORDER BY id
     LIMIT ?
 OFFSET ?;

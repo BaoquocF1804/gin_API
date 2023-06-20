@@ -7,11 +7,10 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createTransfer = `-- name: CreateTransfer :exec
-INSERT INTO transfer (
+INSERT INTO transfers (
     from_account_id,
     to_account_id,
     amount
@@ -21,9 +20,9 @@ INSERT INTO transfer (
 `
 
 type CreateTransferParams struct {
-	FromAccountID sql.NullInt32 `json:"from_account_id"`
-	ToAccountID   sql.NullInt32 `json:"to_account_id"`
-	Amount        int32         `json:"amount"`
+	FromAccountID int32 `json:"from_account_id"`
+	ToAccountID   int32 `json:"to_account_id"`
+	Amount        int32 `json:"amount"`
 }
 
 func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParams) error {
@@ -32,7 +31,7 @@ func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParams) 
 }
 
 const getTransfer = `-- name: GetTransfer :one
-SELECT id, from_account_id, to_account_id, amount, created_at FROM transfer
+SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
 WHERE id = ? LIMIT 1
 `
 
@@ -50,7 +49,7 @@ func (q *Queries) GetTransfer(ctx context.Context, id int32) (Transfer, error) {
 }
 
 const listTransfers = `-- name: ListTransfers :many
-SELECT id, from_account_id, to_account_id, amount, created_at FROM transfer
+SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
 WHERE
     from_account_id = ? OR
     to_account_id = ?
@@ -60,10 +59,10 @@ OFFSET ?
 `
 
 type ListTransfersParams struct {
-	FromAccountID sql.NullInt32 `json:"from_account_id"`
-	ToAccountID   sql.NullInt32 `json:"to_account_id"`
-	Limit         int32         `json:"limit"`
-	Offset        int32         `json:"offset"`
+	FromAccountID int32 `json:"from_account_id"`
+	ToAccountID   int32 `json:"to_account_id"`
+	Limit         int32 `json:"limit"`
+	Offset        int32 `json:"offset"`
 }
 
 func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParams) ([]Transfer, error) {

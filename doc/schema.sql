@@ -1,3 +1,10 @@
+-- SQL dump generated using DBML (dbml-lang.org)
+-- Database: MySQL
+-- Generated at: 2023-06-20T03:38:54.893Z
+
+-- SQL dump generated using DBML (dbml-lang.org)
+-- Database: MySQL
+-- Generated at: 2023-06-20T03:38:54.893Z
 
 CREATE TABLE users (
                        username varchar(255) PRIMARY KEY,
@@ -5,7 +12,7 @@ CREATE TABLE users (
                        full_name varchar(255) NOT NULL,
                        email varchar(255) UNIQUE NOT NULL,
                        is_email_verified bool NOT NULL DEFAULT false,
-                       password_changed_at timestamp NOT NULL DEFAULT (now()),
+                       password_changed_at timestamp NOT NULL ,
                        created_at timestamp NOT NULL DEFAULT (now())
 );
 
@@ -61,18 +68,18 @@ CREATE INDEX entries_index_2 ON entries (account_id);
 
 CREATE INDEX transfers_index_3 ON transfers (from_account_id);
 
-CREATE INDEX transfers_index_4 ON transfers (to_account_id);
+CREATE INDEX `transfers_index_4` ON `transfers` (`to_account_id`);
 
-CREATE INDEX transfers_index_5 ON transfers (from_account_id, to_account_id);
+CREATE INDEX `transfers_index_5` ON `transfers` (`from_account_id`, `to_account_id`);
 
-ALTER TABLE verify_emails ADD FOREIGN KEY (username) REFERENCES users (username);
+ALTER TABLE `verify_emails` ADD FOREIGN KEY (`username`) REFERENCES `users` (`username`);
 
-ALTER TABLE accounts ADD FOREIGN KEY (owner) REFERENCES users (username);
+ALTER TABLE `accounts` ADD FOREIGN KEY (`owner`) REFERENCES `users` (`username`);
 
-ALTER TABLE entries ADD FOREIGN KEY (account_id) REFERENCES accounts (id);
+ALTER TABLE `entries` ADD FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`);
 
-ALTER TABLE transfers ADD FOREIGN KEY (from_account_id) REFERENCES accounts (id);
+ALTER TABLE `transfers` ADD FOREIGN KEY (`from_account_id`) REFERENCES `accounts` (`id`);
 
-ALTER TABLE transfers ADD FOREIGN KEY (to_account_id) REFERENCES accounts (id);
+ALTER TABLE `transfers` ADD FOREIGN KEY (`to_account_id`) REFERENCES `accounts` (`id`);
 
-ALTER TABLE sessions ADD FOREIGN KEY (username) REFERENCES users (username);
+ALTER TABLE `sessions` ADD FOREIGN KEY (`username`) REFERENCES `users` (`username`);

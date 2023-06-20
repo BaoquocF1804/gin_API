@@ -5,7 +5,6 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -18,18 +17,49 @@ type Account struct {
 }
 
 type Entry struct {
-	ID         int32         `json:"id"`
-	AccountsID sql.NullInt32 `json:"accounts_id"`
-	// Can be nagative
+	ID        int32 `json:"id"`
+	AccountID int32 `json:"account_id"`
+	// can be negative or positive
 	Amount    int32     `json:"amount"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type Session struct {
+	ID           int32     `json:"id"`
+	Username     string    `json:"username"`
+	RefreshToken string    `json:"refresh_token"`
+	UserAgent    string    `json:"user_agent"`
+	ClientIp     string    `json:"client_ip"`
+	IsBlocked    bool      `json:"is_blocked"`
+	ExpiresAt    time.Time `json:"expires_at"`
+	CreatedAt    time.Time `json:"created_at"`
+}
+
 type Transfer struct {
-	ID            int32         `json:"id"`
-	FromAccountID sql.NullInt32 `json:"from_account_id"`
-	ToAccountID   sql.NullInt32 `json:"to_account_id"`
-	// Must be nagative
+	ID            int32 `json:"id"`
+	FromAccountID int32 `json:"from_account_id"`
+	ToAccountID   int32 `json:"to_account_id"`
+	// must be positive
 	Amount    int32     `json:"amount"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type User struct {
+	Username          string    `json:"username"`
+	HashedPassword    string    `json:"hashed_password"`
+	FullName          string    `json:"full_name"`
+	Email             string    `json:"email"`
+	IsEmailVerified   bool      `json:"is_email_verified"`
+	PasswordChangedAt time.Time `json:"password_changed_at"`
+	CreatedAt         time.Time `json:"created_at"`
+}
+
+type VerifyEmail struct {
+	ID         int32     `json:"id"`
+	Username   string    `json:"username"`
+	Email      string    `json:"email"`
+	SecretCode string    `json:"secret_code"`
+	IsUsed     bool      `json:"is_used"`
+	CreatedAt  time.Time `json:"created_at"`
+	ExpiredAt  time.Time `json:"expired_at"`
 }
