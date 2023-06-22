@@ -2,7 +2,6 @@ package gapi
 
 import (
 	"context"
-	"fmt"
 	db "github.com/techschool/simplebank/db/sqlc"
 	"github.com/techschool/simplebank/pb"
 	"github.com/techschool/simplebank/util"
@@ -22,9 +21,7 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 		Email:          req.GetEmail(),
 	}
 	err = server.store.CreateUser(ctx, arg)
-	fmt.Print("0000000000000")
 	if err != nil {
-		fmt.Print("............................")
 		return nil, status.Errorf(codes.Internal, "failed to create user-----------: %s", err)
 	}
 	user, err := server.store.GetUser(ctx, arg.Username)

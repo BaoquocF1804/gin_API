@@ -2,10 +2,9 @@ package token
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/aead/chacha20poly1305"
 	"github.com/o1egl/paseto"
+	"time"
 )
 
 // PasetoMaker is a PASETO token maker
