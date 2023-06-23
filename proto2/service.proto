@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package pb_account;
+
+import "rpc_get_account.proto";
+import "rpc_create_account.proto";
+
+option go_package = ".;pb_account";
+
+import "google/api/annotations.proto";
+
+
+
+service SimpleBank{
+  rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse){
+    option (google.api.http) = {
+      post : "/v1/create_account"
+      body : "*"
+    };
+  }
+  rpc GetAccount (GetAccountRequest) returns (GetAccountResponse){
+    option (google.api.http) = {
+      get : "/v1/get_account"
+    };
+  }
+}
+
+

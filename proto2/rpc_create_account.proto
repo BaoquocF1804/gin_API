@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb_account;
+option go_package = ".;pb_account";
+
+import "account.proto";
+
+message CreateAccountRequest {
+  string owner = 1;
+  int32 balance = 2;
+  string currency = 3;
+}
+
+message CreateAccountResponse {
+  Account account = 1;
+}

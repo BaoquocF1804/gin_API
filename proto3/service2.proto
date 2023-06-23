@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_get_user_fromID_AC.proto";
+
+option go_package = ".;pb_connect";
+
+import "google/api/annotations.proto";
+
+
+
+service SimpleBank{
+  rpc GetUserFromID (GetAccountRequest) returns (GetUserResponse){
+    option (google.api.http) = {
+      get : "/v1/get_user_fromID"
+    };
+  }
+}
+
+

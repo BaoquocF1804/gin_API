@@ -1,0 +1,167 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SimpleBank"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/create_account": {
+      "post": {
+        "operationId": "SimpleBank_CreateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pb_accountCreateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pb_accountCreateAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
+    },
+    "/v1/get_account": {
+      "get": {
+        "operationId": "SimpleBank_GetAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pb_accountGetAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "pb_accountAccount": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "balance": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "creatAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pb_accountCreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "type": "string"
+        },
+        "balance": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
+    },
+    "pb_accountCreateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/pb_accountAccount"
+        }
+      }
+    },
+    "pb_accountGetAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/pb_accountAccount"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

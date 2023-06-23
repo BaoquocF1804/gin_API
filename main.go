@@ -7,7 +7,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	db "github.com/techschool/simplebank/db/sqlc"
 	"github.com/techschool/simplebank/gapi"
+	"github.com/techschool/simplebank/gapi2"
 	"github.com/techschool/simplebank/pb"
+	"github.com/techschool/simplebank/pb_account"
 	"github.com/techschool/simplebank/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -18,7 +20,7 @@ import (
 
 var conn *sql.DB
 
-const serverAddress = "0.0.0.0:8080"
+const serverAddress = "0.0.0.0:8082"
 
 func main() {
 	config, err := util.LoadConfig(".")
@@ -46,6 +48,7 @@ func main() {
 		log.Fatal("cannot start server:", err)
 	}
 	go runGatewayServer(config, store)
+	go runGatewayServer2(config, store)
 	runGrpcServer(config, store)
 }
 
@@ -87,6 +90,35 @@ func runGatewayServer(config util.Config, store *db.Store) {
 	mux.Handle("/", grpcMux)
 
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
+	if err != nil {
+		log.Fatal("cannot create listener: ", err)
+	}
+	log.Printf("start HTTP gateway server at %s", listener.Addr().String())
+	err = http.Serve(listener, mux)
+	if err != nil {
+		log.Fatal("cannot start HTTP gateway server: ", err)
+	}
+}
+
+func runGatewayServer2(config util.Config, store *db.Store) {
+	server1, err := gapi2.NewSever(config, store)
+	if err != nil {
+		log.Fatal("cannot create server: ", err)
+	}
+
+	grpcMux := runtime.NewServeMux()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	err = pb_account.RegisterSimpleBankHandlerServer(ctx, grpcMux, server1)
+	if err != nil {
+		log.Fatal("cannot register handler sever", err)
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/", grpcMux)
+
+	listener, err := net.Listen("tcp", serverAddress)
 	if err != nil {
 		log.Fatal("cannot create listener: ", err)
 	}

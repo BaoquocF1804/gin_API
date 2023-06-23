@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pb_account;
+option go_package = ".;pb_account";
+
+import "google/protobuf/timestamp.proto";
+
+
+message Account {
+  int32 ID = 1;
+  string owner = 2;
+  int32 balance = 3;
+  string currency = 4;
+  google.protobuf.Timestamp creat_at = 5;
+}
+
+

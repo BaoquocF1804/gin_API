@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+option go_package = ".;pb_account";
+
+import "account.proto";
+import "user.proto";
+
+message GetAccountRequest {
+  int32 ID = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
